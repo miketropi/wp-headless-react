@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from '@apollo/client/react/components';
 import { gql } from '@apollo/client';
-import { AUTH_TOKEN, USERNAME } from '../constants';
+import { AUTH_TOKEN, REFRESH_TOKEN, USERNAME } from '../constants';
 
 /**
  * GraphQL mutation used for logging in
@@ -21,6 +21,7 @@ const LOGIN_MUTATION = gql`
       }
     ) {
       authToken
+      refreshToken
       user {
         nickname
       }
@@ -43,8 +44,9 @@ class Login extends Component {
 
   confirm = async data => {
     const { history } = this.props;
-    const { authToken, user } = data.login;
+    const { authToken, refreshToken, user } = data.login;
     localStorage.setItem(AUTH_TOKEN, authToken);
+    localStorage.setItem(REFRESH_TOKEN, refreshToken);
     localStorage.setItem(USERNAME, user.nickname);
     history.push(`/`);
   };
